@@ -1,81 +1,114 @@
+# 导入streamlit库，用于创建Web应用
 import streamlit as st
 
-# 设置页面标题和图标
+# 设置页面配置：标题为"音乐播放"，图标为🎵
 st.set_page_config(page_title='音乐播放', page_icon='🎵')
 
-# 专辑封面图片数组 - 存储不同歌曲的封面图片URL
+# 定义专辑封面图片URL列表
 images = [
+    # Queen乐队的波西米亚狂想曲专辑封面
     'https://p1.music.126.net/mW53BkMgGy37I7yVrUg-aQ==/109951163117902077.jpg',
-    'https://p2.music.126.net/ixIs5kkukgNYMmeDsc35_g==/29686813955450.jpg'
+    # 第二首歌曲的专辑封面
+    'https://p2.music.126.net/ixIs5kkukgNYMmeDsc35_g==/29686813955450.jpg',
+    # 第三首歌曲的专辑封面
+    'https://p2.music.126.net/sZ-rACbFrybF0x_lI6XNMw==/109951169297766755.jpg'
 ]
 
-# 歌曲信息数组 - 包含每首歌曲的详细信息
-songs = [
-    {
-        'title': '他不懂',  # 歌曲名称
-        'artist': '张杰',   # 歌手
-        'duration': '5:55', # 歌曲时长
-        'audio': 'https://music.126.com/song/media/outer/url?id=28059417.mp3'  # 音频文件URL
-    },
-    {
-        'title': '天下',
-        'artist': '张杰',
-        'duration': '3:45',
-        'audio': 'https://music.126.com/song/media/outer/url?id=191254.mp3'
-    },
-    {
-        'title': '不眠之夜',
-        'artist': '张杰',
-        'duration': '2:18',
-        'audio': 'https://music.126.com/song/media/outer/url?id=2122308127.mp3'
-    }
+# 定义音频文件URL列表
+audio_files = [
+    # 第一首歌曲的音频文件URL
+    'https://music.163.com/song/media/outer/url?id=28059417.mp3',
+    # 第二首歌曲的音频文件URL
+    'https://music.163.com/song/media/outer/url?id=191254.mp3',
+    # 第三首歌曲的音频文件URL
+    'https://music.163.com/song/media/outer/url?id=2122308127.mp3'
 ]
 
-# 初始化 session_state 来保存当前歌曲索引
-# 如果'song_index'不存在于session_state中，则初始化为0
-if 'song_index' not in st.session_state:
-    st.session_state.song_index = 0
+# 定义歌曲名称列表
+song_names = [
+    # 第一首歌曲名称
+    "Bohemian Rhapsody",
+    # 第二首歌曲名称
+    "Another Song",
+    # 第三首歌曲名称
+    "Third Song"
+]
 
-# 获取当前歌曲信息
-current_index = st.session_state.song_index  # 获取当前播放的歌曲索引
-current_song = songs[current_index]  # 根据索引获取当前歌曲的详细信息
+# 定义歌手列表
+artists = [
+    # 第一首歌曲歌手
+    "Queen",
+    # 第二首歌曲歌手
+    "Artist 2",
+    # 第三首歌曲歌手
+    "Artist 3"
+]
 
-# 创建左右两列布局，增加更大的间距
-# col1用于显示专辑封面，col2用于显示歌曲信息和控制按钮
-col1, col2 = st.columns([1, 2], gap="large")  # gap参数控制列之间的间距
+# 检查session_state中是否存在current_index变量（用于记录当前播放索引）
+if 'current_index' not in st.session_state:
+    # 如果不存在，初始化为0（从第一首开始）
+    st.session_state.current_index = 0
 
+# 从session_state获取当前播放索引
+current_index = st.session_state.current_index
+
+# 显示页面主标题
+st.title("音乐播放器")
+
+# 创建两列布局：第一列显示专辑封面，第二列显示歌曲信息
+col1, col2 = st.columns([1, 1.5])
+
+# 在第一列中显示专辑封面
 with col1:
-    # 显示专辑封面 - 使用 width 参数设置图片宽度
-    st.image(images[current_index], width=250, caption='专辑封面')  # caption参数添加图片说明文字
+    # 显示当前歌曲对应的专辑封面图片，宽度为250像素
+    st.image(images[current_index], width=250)
 
+# 在第二列中显示歌曲信息
 with col2:
-    # 显示歌曲信息，使用markdown调整间距
-    # 通过CSS样式增加左间距和上间距，使布局更美观
-    st.markdown("<div style='margin-left: 50px; margin-top: 20px;'>", unsafe_allow_html=True)
-    st.title(current_song['title'])  # 显示歌曲标题
-    st.write(f"歌手: {current_song['artist']}")  # 显示歌手名称
-    st.write(f"时长: {current_song['duration']}")  # 显示歌曲时长
-    st.markdown("</div>", unsafe_allow_html=True)
-    
-    # 添加分隔线 - 用于分隔歌曲信息和控制按钮
-    st.markdown("---")
-    
-    # 创建控制按钮行 - 分为两列，分别放置上一首和下一首按钮
-    col2_1, col2_2 = st.columns([1, 1])
-    
-    with col2_1:
-        # 上一首按钮
-        # disabled参数控制按钮是否可用，当是第一首歌时禁用
-        if st.button('⬅️ 上一首', disabled=current_index == 0):
-            st.session_state.song_index -= 1  # 切换到上一首歌
-            st.rerun()  # 重新运行应用以更新显示
-    
-    with col2_2:
-        # 下一首按钮
-        # disabled参数控制按钮是否可用，当是最后一首歌时禁用
-        if st.button('下一首 ➡️', disabled=current_index == len(songs) - 1):
-            st.session_state.song_index += 1  # 切换到下一首歌
-            st.rerun()  # 重新运行应用以更新显示
+    # 显示歌曲名称（使用header级别）
+    st.header(song_names[current_index])
+    # 显示歌手信息（使用subheader级别）
+    st.subheader(f"歌手: {artists[current_index]}")
 
-# 音乐播放器 - 显示当前歌曲的音频播放器
-st.audio(current_song['audio'])  # 传入音频文件的URL
+# 添加水平分隔线
+st.divider()
+
+# 创建两列布局：用于放置控制按钮
+col3, col4 = st.columns(2)
+
+# 在第一列中放置"上一首"按钮
+with col3:
+    # 当当前索引为0时禁用按钮（已是第一首）
+    # 点击按钮时，当前索引减1，然后重新运行应用
+    if st.button('上一首', disabled=current_index == 0):
+        # 更新session_state中的索引值
+        st.session_state.current_index -= 1
+        # 重新运行应用以更新界面
+        st.rerun()
+
+# 在第二列中放置"下一首"按钮
+with col4:
+    # 当当前索引为最后一项时禁用按钮（已是最后一首）
+    # 点击按钮时，当前索引加1，然后重新运行应用
+    if st.button('下一首', disabled=current_index == len(images) - 1):
+        # 更新session_state中的索引值
+        st.session_state.current_index += 1
+        # 重新运行应用以更新界面
+        st.rerun()
+
+# 显示音频播放器组件，播放当前索引对应的音频
+st.audio(audio_files[current_index])
+
+# 显示播放列表标题
+st.subheader("播放列表")
+
+# 遍历所有音频文件，生成播放列表
+for i, audio_url in enumerate(audio_files):
+    # 判断是否为当前正在播放的歌曲
+    if i == current_index:
+        # 如果是当前播放歌曲，显示为粗体并标记"正在播放"
+        st.markdown(f"**{i+1}. {song_names[i]}** (正在播放)")
+    else:
+        # 如果不是当前播放歌曲，显示普通文本
+        st.markdown(f"{i+1}. {song_names[i]}")
+
