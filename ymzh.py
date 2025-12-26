@@ -48,10 +48,10 @@ st.markdown("""
     <div class="top-nav">
         <a href="#" class="current">首页</a>
         <a href="https://qinrong1.streamlit.app/">数字档案</a>
-        <a href="https://qinrong3.streamlit.app/">南宁美食数据仪表</a>
+        <a href="https://qinrong3.streamlit.app/">南宁服装数据仪表</a>
         <a href="https://qinrong4.streamlit.app/">相册</a>
-        <a href="https://qinrong.streamlit.app/">音乐播放器</a>
-        <a href="https://qinrong.streamlit.app/">视频播放</a>
+        <a href="https://qinrong5.streamlit.app/">音乐播放器</a>
+        <a href="https://qinrong6.streamlit.app/">视频播放</a>
         <a href="https://qinrong7.streamlit.app/">档案生成器</a>
 
     </div>
@@ -91,4 +91,5 @@ with st.expander("📜 查看历史沿革"):
     学校随着广西的解放而诞生，其前身为创建于1951年5月的广西省行政干部训练班。其后，为适应不同历史时期广西经济建设需要，学校历经了广西人民革命大学、广西行政干部学校、广西经济干部学校、广西经济管理干部学院等历史沿革，并于2019年5月经教育部批准设置为广西职业师范学院。
 
     在不同历史时期，学校聚焦"服务广西经济建设"发展主线，不忘初心、勇担办学使命，为广西经济建设和社会发展作出了不可磨灭的突出贡献，享有良好的办学声誉和广泛的社会影响。
+
     """)
